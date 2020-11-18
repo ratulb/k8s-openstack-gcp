@@ -1,1 +1,1 @@
-# k8s-openstack-in-gcp-compute-engine
+# Kubernetes cluster in openstack deployed inside a google compute engine.
