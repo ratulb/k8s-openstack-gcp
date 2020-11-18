@@ -11,9 +11,13 @@ We need to create a boot disk tagged for virtualization support and launch the V
 How to execute:
 
 Check out this repository to your google compute engine and fire the following command from within the repository:
+
+git clone https://github.com/ratulb/k8s-openstack-gcp.git
+
+cd k8s-openstack-gc
 sudo ./launch.sh
 
-The execute the next 3 commands namely:
+Then execute the next 3 commands namely:
 
  cd devstack
  
