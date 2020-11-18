@@ -14,8 +14,8 @@ source openrc dev dev-project
 #Image image management
 wget --timestamping https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64.img
 #We are tweaking the image to set the password
-apt install libguestfs-tools -y
-virt-customize -a bionic-server-cloudimg-amd64.img --root-password password:secret
+#apt install libguestfs-tools -y
+#virt-customize -a bionic-server-cloudimg-amd64.img --root-password password:secret
 
 openstack image delete ubuntu-18.04-image
 openstack image create --disk-format qcow2 --container-format bare --file bionic-server-cloudimg-amd64.img ubuntu-18.04-image
@@ -43,23 +43,23 @@ openstack router add subnet dev-router dev-subnet
 openstack router set --external-gateway public dev-router 
 
 #Settle down 
-slee 5
+sleep 5
 
 #Server management
 openstack network list 
 NETWORK_ID=$(openstack network list | grep dev-network | awk '{print $2}')
-openstack server delete worker
+openstack server delete master
 openstack server create --flavor m1.small --image ubuntu-18.04-image --nic net-id=$NETWORK_ID \
   --security-group dev-security-group --key-name dev-key-pair master
-                                             |
-openstack console url show
+                                             
+#openstack console url show
 
 openstack server delete worker
-openstack server create --flavor m1.small --image ubuntu-18.04-image --nic net-id=$NETWORK_ID 
+openstack server create --flavor m1.small --image ubuntu-18.04-image --nic net-id=$NETWORK_ID \
   --security-group dev-security-group --key-name dev-key-pair worker
 
 #Settle down 
-slee 5
+sleep 5
 #Floating IP assignment
 openstack floating ip create public
 FLOATING_IP=$(openstack floating ip list | grep None | awk '{print $4}')
