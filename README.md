@@ -13,7 +13,7 @@ Check out this repository to your google compute engine and fire the following c
 sudo ./launch.sh
 
 The execute the next 3 commands namely:
-cd devstack
+ cd devstack
 ./stack.sh
 ./dev-tenant-setup.sh
 
