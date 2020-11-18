@@ -35,7 +35,8 @@ openstack security group rule create --protocol icmp dev-security-group
 openstack network delete dev-network
 openstack network create dev-network
 openstack subnet create dev-subnet --subnet-range 192.168.0.0/24 --dns-nameserver 8.8.8.8 --network dev-network
-
+#Settle down 
+sleep 5
 #Router management
 openstack router delete dev-router
 openstack router create dev-router
@@ -53,7 +54,8 @@ openstack server create --flavor m1.small --image ubuntu-18.04-image --nic net-i
   --security-group dev-security-group --key-name dev-key-pair master
                                              
 #openstack console url show
-
+#Settle down 
+sleep 5
 openstack server delete worker
 openstack server create --flavor m1.small --image ubuntu-18.04-image --nic net-id=$NETWORK_ID \
   --security-group dev-security-group --key-name dev-key-pair worker
@@ -64,8 +66,9 @@ sleep 5
 openstack floating ip create public
 FLOATING_IP=$(openstack floating ip list | grep None | awk '{print $4}')
 openstack server add floating ip master $FLOATING_IP
-
+#Settle down 
+sleep 5
 openstack floating ip create public
 FLOATING_IP=$(openstack floating ip list | grep None | awk '{print $4}')
 openstack server add floating ip worker $FLOATING_IP
-
+echo "Done setting up - pleas check."
