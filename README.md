@@ -14,6 +14,7 @@ Check out this repository to your google compute engine and fire the following c
 
 git clone https://github.com/ratulb/k8s-openstack-gcp.git
 
+
 cd k8s-openstack-gc
 sudo ./launch.sh
 
