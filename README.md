@@ -16,6 +16,7 @@ git clone https://github.com/ratulb/k8s-openstack-gcp.git
 
 
 cd k8s-openstack-gc
+
 sudo ./launch.sh
 
 Then execute the next 3 commands namely:
