@@ -6,7 +6,7 @@ This is a push button deployment - all we need is a GCP(https://console.cloud.go
 
 There is one caveat though - the compute engine should support nested virtualization which is not available by default in google compute engines. 
 
-We need to create a boot disk tagged for virtualization support and launch the VM based off of it in region selecting N1 series of CPUs. That all. How to do that is available in http://rbsomeg.blogspot.com/.
+We need to create a boot disk tagged for virtualization support and launch the VM based off of it in region selecting N1 series of CPUs. That's all. How to do that is available in http://rbsomeg.blogspot.com/.
 
 How to execute:
 Check out this repository to your google compute engine and fire the following command from within the repository:
