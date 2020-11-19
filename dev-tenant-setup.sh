@@ -14,8 +14,8 @@ source openrc dev dev-project
 #Image image management
 wget --timestamping https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64.img
 #We are tweaking the image to set the password
-#apt install libguestfs-tools -y
-#virt-customize -a bionic-server-cloudimg-amd64.img --root-password password:secret
+#sudo apt install libguestfs-tools -y
+#sudo virt-customize -a bionic-server-cloudimg-amd64.img --root-password password:secret
 
 openstack image delete ubuntu-18.04-image
 openstack image create --disk-format qcow2 --container-format bare --file bionic-server-cloudimg-amd64.img ubuntu-18.04-image
@@ -36,15 +36,17 @@ openstack network delete dev-network
 openstack network create dev-network
 openstack subnet create dev-subnet --subnet-range 192.168.0.0/24 --dns-nameserver 8.8.8.8 --network dev-network
 #Settle down 
-sleep 5
+sleep 10
 #Router management
 openstack router delete dev-router
 openstack router create dev-router
+sleep 10
 openstack router add subnet dev-router dev-subnet
+sleep 10
 openstack router set --external-gateway public dev-router 
 
 #Settle down 
-sleep 5
+sleep 10
 
 #Server management
 openstack network list 
@@ -55,20 +57,25 @@ openstack server create --flavor m1.small --image ubuntu-18.04-image --nic net-i
                                              
 #openstack console url show
 #Settle down 
-sleep 5
+sleep 10
 openstack server delete worker
 openstack server create --flavor m1.small --image ubuntu-18.04-image --nic net-id=$NETWORK_ID \
   --security-group dev-security-group --key-name dev-key-pair worker
 
 #Settle down 
-sleep 5
+sleep 10
 #Floating IP assignment
 openstack floating ip create public
-FLOATING_IP=$(openstack floating ip list | grep None | awk '{print $4}')
-openstack server add floating ip master $FLOATING_IP
+sleep 10
+MASTER_FLOATING_IP=$(openstack floating ip list | grep None | awk '{print $4}')
+openstack server add floating ip master $MASTER_FLOATING_IP
 #Settle down 
-sleep 5
+sleep 10
 openstack floating ip create public
-FLOATING_IP=$(openstack floating ip list | grep None | awk '{print $4}')
-openstack server add floating ip worker $FLOATING_IP
-echo "Done setting up - pleas check."
+sleep 10
+WORKER_FLOATING_IP=$(openstack floating ip list | grep None | awk '{print $4}')
+openstack server add floating ip worker $WORKER_FLOATING_IP
+echo -e "\e[1;42mDone setting up - checking..."
+ping -c 4 $MASTER_FLOATING_IP
+ping -c 4 $WORKER_FLOATING_IP
+
